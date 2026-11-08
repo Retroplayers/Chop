@@ -143,7 +143,7 @@ const PHOTO={
  latpl:["https://img.archiexpo.com/images_ae/photo-g/4605261-19129538.jpg","Etenon PL3006, modèle voisin","https://www.archiexpo.com/prod/etenon-fitness/product-4605261-2436809.html"],
  legexta:["https://img.archiexpo.com/images_ae/photo-g/4605261-19142970.jpg","Etenon PL1011","https://www.archiexpo.com/prod/etenon-fitness/product-4605261-2437679.html"],
  abdu:["https://img.archiexpo.com/images_ae/photo-g/4605261-19142962.jpg","Etenon PL3016","https://www.archiexpo.com/prod/etenon-fitness/product-4605261-2437677.html"],
- tirage:["https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Lat_pulldown_machine_20180112.jpg/320px-Lat_pulldown_machine_20180112.jpg","Santeri Viinamäki, CC BY-SA 4.0 (Wikimedia Commons)","https://commons.wikimedia.org/wiki/File:Lat_pulldown_machine_20180112.jpg"]};
+ tirage:["https://commons.wikimedia.org/wiki/Special:FilePath/Lat_pulldown_machine_20180112.jpg?width=320","Santeri Viinamäki, CC BY-SA 4.0 (Wikimedia Commons)","https://commons.wikimedia.org/wiki/File:Lat_pulldown_machine_20180112.jpg"]};
 // photos : liées depuis le site d'origine, jamais copiées dans le dépôt ; masquées si hors ligne
 const photo=k=>{const p=PHOTO[k];return p?`<figure class="ph"><img src="${p[0]}" alt="Photo de la machine : ${e(p[1])}" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.style.display='none'"><figcaption class="body-s v">Photo : <a href="${p[2]}" target="_blank" rel="noopener noreferrer">${e(p[1])}</a></figcaption></figure>`:""};
 function schema(k,focus){const c=CAT[k];const q=c.hackSvg?Object.assign({},c,{pts:[["Sécurité",0,0,1],["Épaulettes"],["Plaque pour les pieds"]]}):c;return machSvg(k,q,focus,mk)}
