@@ -35,6 +35,6 @@ scr.addEventListener('input',ev=>{const t=ev.target,k=t.dataset.in;if(!k)return;
  if(k==='kgv'){s.kgt.val=t.value;return}if(k==='nom')s.user.nom=t.value;else if(k==='snom')s.edit.nom=t.value;else if(k==='q')s.q=t.value;else if(k==='snote'){if(s.sess)s.sess.note=t.value;save();return}draw(1)});
 scr.addEventListener('pointerup',ev=>{const t=ev.target;if(t.dataset&&t.dataset.in==='mal'&&s.mal==null)t.dispatchEvent(new Event('input',{bubbles:true}))});
 document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&s.sheet){s=C.act(s,'close');draw(1)}});
-if('serviceWorker' in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+if('serviceWorker' in navigator&&location.protocol!=='file:'){const had=!!navigator.serviceWorker.controller;navigator.serviceWorker.register('sw.js').then(r=>r.update()).catch(()=>{});navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had&&!window.__rl){window.__rl=1;location.reload()}})}
 window.__chop={get s(){return s}};
 draw();})();
