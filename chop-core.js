@@ -86,17 +86,58 @@ const CORPS={"w":383,"h":418,"png":"iVBORw0KGgoAAAANSUhEUgAAAX8AAAGiCAIAAACAhlHB
 function body(hl,sel,click,many){const W=CORPS.w,H=CORPS.h;
  return `<svg viewBox="0 0 ${W} ${H}" class="body" role="img" aria-label="Planche des muscles, de face et de dos${hl?" : "+e(ZL[hl]||""):""}"><image href="data:image/png;base64,${CORPS.png}" width="${W}" height="${H}"/>`+Object.entries(CORPS.paths).map(([k,d])=>{const c=["z"];if(hl===k||many&&many.includes(k))c.push("hl");if(sel===k)c.push("sel");const at=click?` data-a="zone" data-v="${k}" tabindex="-1" aria-hidden="true"`:"";return `<path class="${c.join(" ")}" d="${d}"${at}/>`}).join("")+`</svg>`}
 const mk=(x,y,n,err,focus)=>`<g class="mk${err?" err":""}${focus?" pulse":""}"><circle cx="${x}" cy="${y}" r="13"/><text x="${x}" y="${y+5}" text-anchor="middle">${n}</text></g>`;
-function schema(k,focus){const c=CAT[k];
- if(c.hackSvg)return `<svg viewBox="0 0 300 190" class="mach" role="img" aria-label="Schéma d'un hack squat"><rect x="0" y="0" width="300" height="190" rx="16" class="mbg"/>
- <line x1="70" y1="170" x2="150" y2="20" class="rail"/><line x1="100" y1="170" x2="180" y2="20" class="rail"/>
- <rect x="112" y="62" width="44" height="70" rx="8" transform="rotate(28 134 97)" class="sled"/><rect x="132" y="48" width="36" height="14" rx="7" transform="rotate(28 150 55)" class="pad"/>
- <rect x="40" y="160" width="110" height="16" rx="5" class="plate"/><rect x="186" y="70" width="10" height="34" rx="5" class="lever"/>
- ${mk(222,86,1,1,focus)}${mk(172,40,2)}${mk(96,150,3)}<text x="240" y="90" class="mt">Sécurité</text></svg>`;
- return `<svg viewBox="0 0 300 190" class="mach" role="img" aria-label="Schéma simplifié : ${e(c.nom)}"><rect x="0" y="0" width="300" height="190" rx="16" class="mbg"/>
- <rect x="236" y="16" width="14" height="158" rx="6" class="rail2"/><rect x="40" y="172" width="220" height="6" rx="3" class="plate"/>
- <rect x="96" y="40" width="20" height="92" rx="8" class="sled"/><rect x="96" y="116" width="110" height="18" rx="8" class="sled"/><rect x="146" y="134" width="10" height="38" class="rail2"/>
- <rect x="180" y="60" width="56" height="10" rx="5" class="pad"/>
- ${c.pts.map((p,i)=>mk(p[1],p[2],i+1,p[3],focus&&p[3])).join("")}</svg>`}
+// ---------- schémas de machines : un dessin par famille (vue de côté) ----------
+const R=(x,y,w,h,c,r,t)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r==null?4:r}" class="${c}"${t?` transform="${t}"`:""}/>`;
+const FL=R(24,174,252,6,"plate",3);
+const MACH={
+press45:{a:{a:[104,112],h:[104,112],b:[70,142],f:[214,70]},s:FL+
+ `<g transform="translate(46 170) rotate(-30)">${R(0,0,230,8,"rail2",3)}${R(120,-30,34,30,"sled",6)}${R(150,-70,10,70,"pad",4)}${R(104,-20,16,20,"plate",3)}</g>`+
+ R(30,150,56,12,"sled",5)+R(30,96,14,60,"sled",6,"rotate(18 37 126)")},
+hack:{a:{a:[205,84],h:[170,40],b:[96,150],f:[96,150]},s:FL+
+ `<line x1="64" y1="170" x2="150" y2="22" class="rail"/><line x1="96" y1="170" x2="182" y2="22" class="rail"/>`+
+ R(112,62,44,70,"sled",8,"rotate(28 134 97)")+R(132,48,36,14,"pad",7,"rotate(28 150 55)")+R(40,160,110,14,"plate",5)+R(190,70,10,34,"lever",5)},
+pulldown:{a:{a:[158,106],h:[110,70],b:[140,150],f:[214,100]},s:FL+
+ R(212,16,14,158,"rail2",5)+R(110,16,116,12,"rail2",5)+R(232,40,24,120,"plate",4)+`<circle cx="112" cy="30" r="10" class="plate"/><line x1="112" y1="40" x2="112" y2="66" class="rail"/>`+R(88,64,48,9,"pad",4)+
+ R(104,140,84,14,"sled",6)+R(140,154,12,20,"rail2",3)+R(128,112,56,12,"pad",6)},
+row:{a:{a:[84,130],h:[236,86],b:[100,150],f:[140,72]},s:FL+
+ R(60,150,150,8,"sled",4)+R(76,160,12,14,"rail2",3)+R(190,160,12,14,"rail2",3)+R(70,100,12,52,"sled",5)+
+ R(128,50,14,64,"pad",7)+R(138,100,6,50,"rail2",3)+R(210,60,12,114,"rail2",5)+R(150,82,66,8,"rail2",4)+R(212,80,34,12,"pad",6)},
+chestp:{a:{a:[128,142],h:[202,74],b:[106,86],f:[128,142]},s:FL+
+ R(120,150,12,24,"rail2",3)+R(80,136,76,14,"sled",6)+R(88,48,16,92,"sled",7)+R(150,48,6,100,"rail2",3)+
+ R(110,66,86,10,"rail2",5)+R(190,56,12,34,"pad",6)+R(206,40,16,134,"rail2",6)+R(232,30,34,144,"plate",5)},
+legext:{a:{a:[168,112],h:[84,120],b:[84,90],f:[214,138]},s:FL+
+ R(66,66,18,94,"sled",8)+R(66,138,100,16,"sled",8)+R(110,154,12,20,"rail2",3)+R(156,104,24,24,"lever",12)+
+ R(170,112,14,52,"rail2",5,"rotate(-14 177 112)")+R(204,128,26,18,"pad",8)+R(232,110,16,64,"plate",4)},
+legcurl:{a:{a:[166,92],h:[84,120],b:[84,90],f:[218,146]},s:FL+
+ R(66,66,18,94,"sled",8)+R(66,138,100,16,"sled",8)+R(110,154,12,20,"rail2",3)+R(120,96,70,16,"pad",8)+
+ R(200,130,26,18,"pad",8)+R(188,104,10,52,"rail2",5,"rotate(14 193 104)")+R(232,110,16,64,"plate",4)},
+calf:{a:{a:[110,52],h:[236,90],b:[110,52],f:[130,150]},s:FL+
+ R(60,160,160,14,"sled",5)+R(110,150,56,10,"pad",4)+R(130,60,14,100,"rail2",5)+R(88,46,70,14,"pad",7)+R(100,40,10,30,"rail2",3)+R(226,40,18,134,"plate",6)},
+cable:{a:{a:[240,170],h:[120,86],b:[240,170],f:[240,100]},s:FL+
+ R(214,16,14,158,"rail2",5)+R(232,40,24,120,"plate",4)+R(120,16,108,12,"rail2",5)+`<circle cx="122" cy="30" r="10" class="plate"/><line x1="122" y1="40" x2="122" y2="82" class="rail"/>`+R(106,82,32,9,"pad",4)+R(60,166,40,8,"sled",4)},
+dumb:{a:{a:[110,150],h:[200,100],b:[110,100],f:[110,150]},s:FL+
+ R(70,120,120,14,"sled",6)+R(96,134,12,40,"rail2",3)+R(160,134,12,40,"rail2",3)+R(64,60,14,64,"sled",6,"rotate(-18 71 92)")+
+ R(190,96,60,8,"rail2",4)+R(184,80,12,40,"plate",3)+R(244,80,12,40,"plate",3)},
+seated:{a:{a:[128,142],h:[206,92],b:[100,90],f:[128,142]},s:FL+
+ R(120,150,12,24,"rail2",3)+R(80,136,76,14,"sled",6)+R(84,48,16,92,"sled",7)+R(188,70,50,12,"pad",6)+R(210,76,10,98,"rail2",5)+R(204,30,34,12,"rail2",5)+R(226,16,14,150,"plate",3)},
+abdu:{a:{a:[150,150],h:[84,100],b:[150,108],f:[222,112]},s:FL+
+ R(100,100,100,14,"sled",6)+R(140,114,12,60,"rail2",4)+R(86,46,16,56,"sled",7)+R(206,90,22,46,"pad",9,"rotate(-12 217 113)")+R(56,90,22,46,"pad",9,"rotate(12 67 113)")+R(236,100,14,74,"plate",4)},
+hip:{a:{a:[206,98],h:[206,98],b:[96,110],f:[150,150]},s:FL+
+ R(60,92,60,40,"sled",8)+R(70,132,12,42,"rail2",3)+R(60,60,14,34,"sled",6)+R(130,140,100,12,"sled",6)+R(190,86,60,12,"pad",6)+R(184,70,10,44,"plate",3)+R(246,70,10,44,"plate",3)},
+mat:{a:{a:[150,150],h:[90,110],b:[150,150],f:[210,110]},s:FL+
+ R(50,150,200,16,"pad",8)+`<circle cx="80" cy="120" r="14" class="sled"/><rect x="94" y="118" width="86" height="14" rx="7" class="sled"/><rect x="170" y="70" width="12" height="52" rx="6" class="sled" transform="rotate(10 176 100)"/><rect x="190" y="132" width="50" height="12" rx="6" class="sled"/>`}
+};
+const FAM={press45:"presse lp45 pendulum",hack:"hack",pulldown:"tirage latpl r5205 latc",row:"rowing rowc",chestp:"chest tp90 tp135 tp180 incl multi dpress epaules dips facepull_",legext:"legext legexta",legcurl:"legcurl legcurla",calf:"mollets molds molas",cable:"triceps tricc tricoh facepull pallof crunch",dumb:"elev elevh curlm",seated:"elevm bicm lomb",abdu:"abdu addu",hip:"hip",mat:"deadbug"};
+const FAMK={};Object.entries(FAM).forEach(([f,l])=>l.split(" ").forEach(k=>FAMK[k]=f));
+const famOf=k=>FAMK[k]||"seated";
+function anchor(f,label,i){const A=MACH[f].a,l=label.toLowerCase();
+ const t=/sécurité|réglage|axe/.test(l)?"a":/poign|corde|barre|haltère/.test(l)?"h":/dossier|siège|coussin|cale/.test(l)?"b":/plaque|marche|pied|rouleau|charge|disque/.test(l)?"f":["a","h","b"][i%3];
+ return A[t]}
+function machSvg(k,c,focus,mk){const f=famOf(k),M=MACH[f];
+ const dots=c.pts.map((p,i)=>{const[x,y]=anchor(f,p[0],i);return mk(x,y,i+1,p[3],focus&&p[3])}).join("");
+ return `<svg viewBox="0 0 300 190" class="mach" role="img" aria-label="Schéma simplifié : ${c.nom}"><rect x="0" y="0" width="300" height="190" rx="16" class="mbg"/>${M.s}${dots}</svg>`}
+
+function schema(k,focus){const c=CAT[k];const q=c.hackSvg?Object.assign({},c,{pts:[["Sécurité",0,0,1],["Épaulettes"],["Plaque pour les pieds"]]}):c;return machSvg(k,q,focus,mk)}
 function legend(k){const c=CAT[k];const pts=c.hackSvg?[["Sécurité, toujours en premier",0,0,1],["Épaulettes"],["Plaque pour les pieds"]]:c.pts;
  return `<ol class="legend body-m">${pts.map((p,i)=>`<li><b class="n${p[3]?" err":""}">${i+1}</b> ${e(p[0])}${p[3]&&!c.hackSvg?" (sécurité)":""}${lex(p[0])?`<span class="v"> : ${e(lex(p[0]))}</span>`:""}</li>`).join("")}</ol>`}
 // ---------- éléments communs ----------
