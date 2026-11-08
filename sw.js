@@ -1,4 +1,4 @@
-const V="chop-2026-11-08-16",F=["./","index.html","chop-core.js","shell.js","manifest.webmanifest","icon-192.png","icon-512.png"];
+const V="chop-2026-11-08-17",F=["./","index.html","chop-core.js","shell.js","manifest.webmanifest","icon-192.png","icon-512.png"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(F)).then(()=>self.skipWaiting()))});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(K=>Promise.all(K.filter(k=>k!==V&&k!=="chop-fonts").map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener("fetch",e=>{const u=new URL(e.request.url);if(e.request.method!=="GET")return;
