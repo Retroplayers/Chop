@@ -1,7 +1,7 @@
 (function(){
 const C=window.Chop,scr=document.getElementById('scr'),KEY='chop.alex.v1';
 const T=['sheet','snack','undo','kgt','erow'];
-function load(){try{const j=localStorage.getItem(KEY);if(j){const o=JSON.parse(j);T.forEach(k=>o[k]=null);if(!o.screen||['premiere','stop'].includes(o.screen)&&!o.ex)o.screen='auj';return o}}catch(_){}return C.init('alex')}
+function load(){try{const j=localStorage.getItem(KEY);if(j){const o=JSON.parse(j);T.forEach(k=>o[k]=null);if(!o.nv){o.nv=2;if(o.next==='H1'&&(o.hist||[]).length<=3)o.next='H2'}if(!o.screen||['premiere','stop'].includes(o.screen)&&!o.ex)o.screen='auj';return o}}catch(_){}return C.init('alex')}
 let s=load(),sv=null;
 function save(){clearTimeout(sv);sv=setTimeout(()=>{try{localStorage.setItem(KEY,JSON.stringify({...s,snack:null,sheet:null,undo:null}))}catch(_){}},150)}
 function draw(keep){const st=scr.scrollTop,f=document.activeElement&&document.activeElement.dataset&&document.activeElement.dataset.in;scr.innerHTML=C.render(s);if(keep)scr.scrollTop=st;if(f){const el=scr.querySelector('[data-in="'+f+'"]');if(el&&el.type!=='range'){el.focus();const n=el.value.length;try{el.setSelectionRange(n,n)}catch(_){}}}save();wake()}
