@@ -17,12 +17,13 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden){wake();if
 // sauvegarde / restauration
 function exporter(){const b=new Blob([JSON.stringify({...s,snack:null,sheet:null,undo:null},null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='chop-sauvegarde-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);s.snack='Copie enregistrée dans tes téléchargements.';draw(1);snack()}
 function importer(){const i=document.createElement('input');i.type='file';i.accept='application/json,.json';i.onchange=()=>{const f=i.files[0];if(!f)return;f.text().then(t=>{const o=JSON.parse(t);if(!o.prog||!o.hist)throw 0;T.forEach(k=>o[k]=null);o.screen='auj';s=o;s.snack='Copie remise : '+s.hist.length+' séances.';draw();snack()}).catch(()=>{s.snack="Ce fichier n'est pas une copie de Chop.";draw(1);snack()})};i.click()}
+function importerSemaine(){const i=document.createElement('input');i.type='file';i.accept='application/json,.json';i.onchange=()=>{const f=i.files[0];if(!f)return;f.text().then(x=>{let o;try{o=JSON.parse(x)}catch(_){o=null}const r=C.importWeek(s,o);if(!r.ok){s.snack='Import refusé : '+r.err[0]+(r.err.length>1?' (+'+(r.err.length-1)+')':'')}draw(1);snack()})};i.click()}
 // retour Android : ferme le panneau ou revient en arrière dans l'appli
 try{history.replaceState({c:1},'');history.pushState({c:2},'')}catch(_){}
 addEventListener('popstate',()=>{try{history.pushState({c:2},'')}catch(_){}if(s.sheet){s=C.act(s,'close');draw(1);return}const b=scr.querySelector('.tab > .ib');if(b)b.click()});
 let tF=0;
 scr.addEventListener('click',ev=>{const t=ev.target.closest('[data-a]');if(!t||t.disabled)return;const a=t.dataset.a;
- if(a==='export'){exporter();return}if(a==='import'){importer();return}
+ if(a==='export'){exporter();return}if(a==='import'){importer();return}if(a==='semaine'){importerSemaine();return}
  if(a==='faite'){const n=Date.now();if(n-tF<900)return;tF=n;if(window.Notification&&Notification.permission==='default')Notification.requestPermission().catch(()=>{})}
  const prev=s.screen;s=C.act(s,a,t.dataset.v);syncRest(a);draw(s.screen===prev);
  if(s.screen!==prev){scr.scrollTop=0;if(s.screen==='exercice')voirNext()}else if(s.screen==='exercice'&&['faite','zone','malok','fichemaj','fichecorr','corrno','defaire','undo','swap'].includes(a))voir();snack()});

@@ -308,7 +308,7 @@ function mach(s){const k=s.mach,c=CAT[k],P=stats(s,k),f=s.fiche[k];
  ${f?`<section class="card low"><span class="label-l v">${I("bookmark")}Ta fiche</span><dl class="fi">${f.vals.map(([a,b])=>`<dt class="body-m v">${e(a)}</dt><dd class="title-s">${e(b)}</dd>`).join("")}</dl></section>`:""}</main>`}
 function hseance(s){const h=s.hist[s.hs];return topbar((seanceById(s,h.sid)||{nom:"Séance"}).nom,h.d,["tab","arrow_back","Retour",s.tab])+`<main class="cnt"><p class="title-l">${tenues(h)}</p>${h.note?`<section class="card tonal"><span class="label-m">Ta note</span><p class="body-l">${e(h.note)}</p></section>`:""}${Object.entries(h.ex).map(([k,R])=>`<section class="card low"><h2 class="title-m">${e(CAT[k].nom)}</h2><div class="hsr">${R.map((r,i)=>`<span class="hs ${r.ok?"ok":"redo"}">${I(r.ok?"check_circle":r.pain!=null?"healing":"replay","sm")}${kg(r.kg)} kg${r.reps?` × ${r.reps}`:""}${r.pain!=null?` · douleur ${r.pain}`:""}</span>`).join("")}</div>${h.stop&&h.stop[k]?`<p class="body-m er">Arrêté : douleur au-dessus de ton seuil.</p>`:""}</section>`).join("")}</main>`}
 // ---------- réglages ----------
-function reglages(s){return topbar("Réglages",null,["fromset","arrow_back","Retour"])+`<main class="cnt">${s.real?`<section class="card low"><h2 class="title-l">Mes données</h2><p class="body-m v">Tout est gardé sur ce téléphone. Fais une copie de temps en temps.</p><div class="row2"><button class="btn tonal" data-a="export">${I("download")}Copie de sauvegarde</button><button class="btn out" data-a="import">${I("upload")}Remettre une copie</button></div></section>`:""}<section class="card low"><h2 class="title-l">Seuil de douleur</h2><p class="body-m v">Un seul seuil, sur ton ressenti global. Au-delà, Chop te dit d'arrêter l'exercice ; en dessous, il corrige et allège.</p><div class="sld"><input type="range" min="0" max="10" step="1" value="${s.seuil}" data-in="seuil" aria-label="Seuil de douleur"><span class="headline-m num">${s.seuil} / 10</span></div><div class="sp body-s v"><span>0 aucune</span><span>10 très forte</span></div></section>
+function reglages(s){return topbar("Réglages",null,["fromset","arrow_back","Retour"])+`<main class="cnt">${s.real?`<section class="card low"><h2 class="title-l">Mes données</h2><p class="body-m v">Tout est gardé sur ce téléphone. Fais une copie de temps en temps.</p><div class="row2"><button class="btn tonal" data-a="export">${I("download")}Copie de sauvegarde</button><button class="btn out" data-a="import">${I("upload")}Remettre une copie</button></div></section>`:""}${s.real?`<section class="card low"><h2 class="title-l">Semaine de coaching</h2><p class="body-m v">${s.semaine?`Semaine ${s.semaine.id||""} importée (${s.semaine.ids.join(", ")}). Ton historique est gardé.`:"Remplace les séances du programme par celles d'un fichier de semaine. Ton historique ne bouge pas."}</p><div class="row2"><button class="btn tonal" data-a="semaine">${I("upload")}Importer</button>${s.semaine&&s.semaine.prev?`<button class="btn out" data-a="semaineundo">Annuler l'import</button>`:""}</div></section>`:""}<section class="card low"><h2 class="title-l">Seuil de douleur</h2><p class="body-m v">Un seul seuil, sur ton ressenti global. Au-delà, Chop te dit d'arrêter l'exercice ; en dessous, il corrige et allège.</p><div class="sld"><input type="range" min="0" max="10" step="1" value="${s.seuil}" data-in="seuil" aria-label="Seuil de douleur"><span class="headline-m num">${s.seuil} / 10</span></div><div class="sp body-s v"><span>0 aucune</span><span>10 très forte</span></div></section>
  <section class="card low"><h2 class="title-l">Temps de repos</h2><p class="body-m v">Le minuteur part tout seul après chaque série.</p>${choixRepos(s)}</section>
  <section class="card low"><h2 class="title-l">Toi</h2><dl class="fi"><dt class="body-m v">Prénom</dt><dd class="title-s">${e(s.user.nom||"—")}</dd><dt class="body-m v">Les machines</dt><dd class="title-s">${s.user.niveau==="debute"?"Je débute":s.user.niveau==="fer"?"Muscu, pas ces machines":"Je connais les machines"}</dd><dt class="body-m v">Unités</dt><dd class="title-s">kg</dd></dl></section>
  <p class="body-s v">Tes données restent sur ce téléphone.</p></main>`}
@@ -339,6 +339,7 @@ function startSess(s,id){s.sess={sid:id,order:seanceById(s,id).ex.map(x=>x.m),ro
  seanceById(s,id).ex.forEach(x=>{if(x.kg==null&&!s.real)s.first[x.m]=true})}
 function act(s,a,v){applyCustom(s);s.snack=null;const u=s.undo;s.undo=null;const c=s.ex&&CAT[s.ex];
  switch(a){
+ case"semaineundo":if(s.semaine&&s.semaine.prev){s.prog=s.semaine.prev;s.semaine=null;s.snack="Import annulé : ancien programme remis."}break;
  case"onb":if(v==="3"&&s.screen==="onb2"&&(!s.user.nom.trim()||!s.user.niveau))break;s.screen="onb"+v;break;
  case"niveau":s.user.niveau=v;break;
  case"depart":if(v==="exemple"){s.prog=progExemple();s.first={};s.screen="auj";s.tab="auj";s.snack="3 séances exemple ajoutées : jambes, haut du corps, corps entier."}else{s.edit={id:"S1",nom:"",ex:[],isNew:true,onb:true};s.screen="sedit"}break;
@@ -451,5 +452,34 @@ function act(s,a,v){applyCustom(s);s.snack=null;const u=s.undo;s.undo=null;const
  case"mach":s.mach=v;s.screen="mach";break;
  case"hseance":s.hs=+v;s.screen="hseance";break;}
  return s}
-window.Chop={init,render,act,rows,CAT};
+// ---------- import d'une semaine de coaching (format chop-semaine v1) ----------
+// Remplace seulement les séances présentes dans le fichier ; l'historique, la séance du jour et la séance en cours ne bougent pas.
+const SEM_IDS=["H1","B1","H2","B2"];
+function importWeek(s,o){applyCustom(s);const err=[],E=m=>err.push(m);
+ if(!o||typeof o!=="object"||o.format!=="chop-semaine")return{ok:false,err:["Ce fichier n'est pas une semaine Chop."]};
+ if(o.version!==1)return{ok:false,err:["Version du fichier non reconnue : "+o.version+"."]};
+ if(s.sess)return{ok:false,err:["Termine ou quitte la séance en cours avant d'importer."]};
+ if(!Array.isArray(o.seances)||!o.seances.length||o.seances.length>4)return{ok:false,err:["Le fichier doit contenir de 1 à 4 séances."]};
+ const ids=new Set(),out=[],num=(x,a,b)=>typeof x==="number"&&isFinite(x)&&x>=a&&x<=b;
+ o.seances.forEach((q,i)=>{const w="Séance "+(i+1)+" : ";
+  if(!q||!SEM_IDS.includes(q.id)){E(w+"identifiant « "+(q&&q.id)+" » inconnu (H1, B1, H2 ou B2).");return}
+  if(ids.has(q.id)){E(w+q.id+" est présente deux fois.");return}ids.add(q.id);
+  if(typeof q.nom!=="string"||!q.nom.trim()){E(w+"nom manquant.");return}
+  if(!Array.isArray(q.ex)||!q.ex.length||q.ex.length>8){E(w+q.id+" : de 1 à 8 exercices.");return}
+  const ex=[];q.ex.forEach((e,j)=>{const x=q.id+" exercice "+(j+1)+" : ";
+   if(!e||!CAT[e.m]){E(x+"machine « "+(e&&e.m)+" » absente de Chop.");return}
+   if(!Number.isInteger(e.sets)||e.sets<1||e.sets>6){E(x+"séries entre 1 et 6.");return}
+   if(!num(e.rmin,1,50)||!num(e.rmax,1,50)||e.rmin>e.rmax){E(x+"fourchette de répétitions invalide.");return}
+   if(e.kg!==null&&!num(e.kg,0,500)){E(x+"charge : un nombre ou null (jamais inventée).");return}
+   const repos=e.repos==null?90:e.repos;if(!num(repos,10,600)){E(x+"repos invalide.");return}
+   ex.push({m:e.m,sets:e.sets,reps:e.rmin,rmin:e.rmin,rmax:e.rmax,kg:e.kg,repos})});
+  out.push({id:q.id,nom:q.nom.trim(),ex})});
+ if(err.length)return{ok:false,err};
+ const prev=JSON.parse(JSON.stringify(s.prog)),prog=prev.map(p=>({...p,ex:p.ex.slice()}));
+ out.forEach(q=>{const k=prog.findIndex(p=>p.id===q.id);if(k>=0)prog[k]=q;else prog.push(q)});
+ prog.sort((a,b)=>SEM_IDS.indexOf(a.id)-SEM_IDS.indexOf(b.id));
+ s.prog=prog;s.semaine={id:o.semaine||null,at:Date.now(),ids:out.map(q=>q.id),prev};
+ s.snack="Semaine importée : "+out.map(q=>q.nom).join(", ")+". Historique gardé.";
+ return{ok:true,err:[]}}
+window.Chop={init,render,act,rows,CAT,importWeek};
 })();

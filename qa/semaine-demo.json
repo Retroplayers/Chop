@@ -1,0 +1,255 @@
+{
+ "format": "chop-semaine",
+ "version": 1,
+ "semaine": "2026-11-09 (démonstration)",
+ "seances": [
+  {
+   "id": "H1",
+   "nom": "Haut 1",
+   "ex": [
+    {
+     "m": "tp90",
+     "sets": 4,
+     "rmin": 6,
+     "rmax": 10,
+     "kg": 45,
+     "repos": 120
+    },
+    {
+     "m": "latpl",
+     "sets": 3,
+     "rmin": 6,
+     "rmax": 10,
+     "kg": null,
+     "repos": 120
+    },
+    {
+     "m": "tp135",
+     "sets": 4,
+     "rmin": 8,
+     "rmax": 12,
+     "kg": 35,
+     "repos": 90
+    },
+    {
+     "m": "rowc",
+     "sets": 3,
+     "rmin": 8,
+     "rmax": 12,
+     "kg": 40,
+     "repos": 90
+    },
+    {
+     "m": "elevm",
+     "sets": 4,
+     "rmin": 12,
+     "rmax": 20,
+     "kg": 25,
+     "repos": 60
+    },
+    {
+     "m": "tricoh",
+     "sets": 3,
+     "rmin": 10,
+     "rmax": 15,
+     "kg": 27.5,
+     "repos": 60
+    },
+    {
+     "m": "bicm",
+     "sets": 3,
+     "rmin": 10,
+     "rmax": 15,
+     "kg": 16,
+     "repos": 60
+    }
+   ]
+  },
+  {
+   "id": "B1",
+   "nom": "Bas 1",
+   "ex": [
+    {
+     "m": "pendulum",
+     "sets": 3,
+     "rmin": 6,
+     "rmax": 10,
+     "kg": null,
+     "repos": 120
+    },
+    {
+     "m": "hip",
+     "sets": 3,
+     "rmin": 8,
+     "rmax": 12,
+     "kg": null,
+     "repos": 120
+    },
+    {
+     "m": "legcurla",
+     "sets": 4,
+     "rmin": 8,
+     "rmax": 12,
+     "kg": null,
+     "repos": 120
+    },
+    {
+     "m": "legexta",
+     "sets": 3,
+     "rmin": 10,
+     "rmax": 15,
+     "kg": null,
+     "repos": 90
+    },
+    {
+     "m": "abdu",
+     "sets": 4,
+     "rmin": 12,
+     "rmax": 20,
+     "kg": null,
+     "repos": 90
+    },
+    {
+     "m": "molas",
+     "sets": 4,
+     "rmin": 10,
+     "rmax": 20,
+     "kg": null,
+     "repos": 60
+    },
+    {
+     "m": "pallof",
+     "sets": 3,
+     "rmin": 10,
+     "rmax": 10,
+     "kg": null,
+     "repos": 60
+    }
+   ]
+  },
+  {
+   "id": "H2",
+   "nom": "Haut 2",
+   "ex": [
+    {
+     "m": "latpl",
+     "sets": 3,
+     "rmin": 6,
+     "rmax": 10,
+     "kg": 100,
+     "repos": 120
+    },
+    {
+     "m": "tp180",
+     "sets": 3,
+     "rmin": 8,
+     "rmax": 12,
+     "kg": 35,
+     "repos": 120
+    },
+    {
+     "m": "rowc",
+     "sets": 3,
+     "rmin": 8,
+     "rmax": 12,
+     "kg": 40,
+     "repos": 90
+    },
+    {
+     "m": "elevh",
+     "sets": 4,
+     "rmin": 12,
+     "rmax": 20,
+     "kg": null,
+     "repos": 60
+    },
+    {
+     "m": "facepull",
+     "sets": 4,
+     "rmin": 12,
+     "rmax": 20,
+     "kg": null,
+     "repos": 60
+    },
+    {
+     "m": "tricc",
+     "sets": 3,
+     "rmin": 10,
+     "rmax": 15,
+     "kg": 40,
+     "repos": 60
+    }
+   ]
+  },
+  {
+   "id": "B2",
+   "nom": "Bas 2",
+   "ex": [
+    {
+     "m": "pendulum",
+     "sets": 3,
+     "rmin": 6,
+     "rmax": 10,
+     "kg": null,
+     "repos": 120
+    },
+    {
+     "m": "hip",
+     "sets": 3,
+     "rmin": 8,
+     "rmax": 12,
+     "kg": null,
+     "repos": 120
+    },
+    {
+     "m": "legcurla",
+     "sets": 4,
+     "rmin": 8,
+     "rmax": 12,
+     "kg": null,
+     "repos": 120
+    },
+    {
+     "m": "addu",
+     "sets": 3,
+     "rmin": 12,
+     "rmax": 15,
+     "kg": 45,
+     "repos": 90
+    },
+    {
+     "m": "molds",
+     "sets": 4,
+     "rmin": 10,
+     "rmax": 20,
+     "kg": 47,
+     "repos": 60
+    },
+    {
+     "m": "crunch",
+     "sets": 3,
+     "rmin": 10,
+     "rmax": 15,
+     "kg": null,
+     "repos": 60
+    },
+    {
+     "m": "deadbug",
+     "sets": 3,
+     "rmin": 8,
+     "rmax": 8,
+     "kg": 0,
+     "repos": 60
+    },
+    {
+     "m": "lomb",
+     "sets": 3,
+     "rmin": 10,
+     "rmax": 15,
+     "kg": null,
+     "repos": 90
+    }
+   ]
+  }
+ ]
+}
